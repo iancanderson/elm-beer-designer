@@ -2,46 +2,11 @@ import Html exposing (Html, button, div, h2, span, text)
 import Html.App as Html
 import Html.Events exposing (onClick)
 
+import Calculations exposing (recipeIbus)
+import Model exposing (HopAddition, Model, Recipe, initialHopAddition, initialModel)
+
 main =
   Html.beginnerProgram { model = initialModel, view = view, update = update }
-
-
--- MODEL
-
-type alias AlphaAcidPercentage = Float
-type MassUnit = Ounce
-type HopVariety = Cascade
-type alias Amount =
-  { value: Float
-  , weightUnit: MassUnit
-  }
-type alias HopAddition =
-  { amount: Amount
-  , hopVariety: HopVariety
-  }
-type alias Recipe =
-  { hopAdditions: List HopAddition
-  }
-type alias Model = Recipe
-
-initialHopAddition =
-  { amount = { value = 1, weightUnit = Ounce }
-  , hopVariety = Cascade
-  }
-initialModel =
-  { hopAdditions = [initialHopAddition]
-  }
-
--- MODEL CALCULATIONS
-
-hopVarietyAlphaAcid : HopVariety -> AlphaAcidPercentage
-hopVarietyAlphaAcid hopVariety =
-  case hopVariety of
-    Cascade ->
-      5.25
-
-recipeIbus : Recipe -> Float
-recipeIbus recipe = 0.4
 
 -- UPDATE
 
