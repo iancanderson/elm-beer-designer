@@ -1,4 +1,4 @@
-import Html exposing (Html, button, div, text)
+import Html exposing (Html, button, div, h2, span, text)
 import Html.App as Html
 import Html.Events exposing (onClick)
 
@@ -8,6 +8,7 @@ main =
 
 -- MODEL
 
+type alias AlphaAcidPercentage = Float
 type MassUnit = Ounce
 type HopVariety = Cascade
 type alias Amount =
@@ -31,12 +32,23 @@ initialModel =
   { hopAdditions = [initialHopAddition]
   }
 
+-- MODEL CALCULATIONS
+
+hopVarietyAlphaAcid : HopVariety -> AlphaAcidPercentage
+hopVarietyAlphaAcid hopVariety =
+  case hopVariety of
+    Cascade ->
+      5.25
+
+recipeIbus : Recipe -> Float
+recipeIbus recipe = 0.4
+
 -- UPDATE
 
-addHopAdditionAmount : Model -> Float -> Model
-addHopAdditionAmount model delta =
+addHopAdditionAmount : Recipe -> Float -> Model
+addHopAdditionAmount recipe delta =
   let
-    oldHopAddition = Maybe.withDefault initialHopAddition <| List.head model.hopAdditions
+    oldHopAddition = Maybe.withDefault initialHopAddition <| List.head recipe.hopAdditions
     oldAmount = oldHopAddition.amount
     oldValue = oldAmount.value
   in
@@ -74,6 +86,28 @@ hopAdditionView hopAddition =
     , text <| toString hopAddition.hopVariety
     ]
 
+hopAdditionsView : Recipe -> Html Msg
+hopAdditionsView recipe =
+  let
+    heading = h2 [] [ text "Hop Additions" ]
+    rows = List.map hopAdditionView recipe.hopAdditions
+  in
+    div [] <| heading :: rows
+
+recipeSummary : Recipe -> Html Msg
+recipeSummary recipe =
+  let
+    ibuDisplay = "IBUs: " ++ toString(recipeIbus recipe)
+  in
+    div []
+      [ h2 [] [ text "Recipe Summary" ]
+      , span [] [ text ibuDisplay ]
+      ]
+
 view : Model -> Html Msg
 view model =
-  div [] <| List.map hopAdditionView model.hopAdditions
+  div []
+    [ recipeSummary model
+    , hopAdditionsView model
+    ]
+
