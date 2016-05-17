@@ -49,6 +49,10 @@ hopAdditionView hopAddition =
     , text <| toString hopAddition.amount.weightUnit
     , text " "
     , text <| toString hopAddition.hopVariety
+    , text " boiled for "
+    , text <| toString hopAddition.boilTime.value
+    , text " "
+    , text <| toString hopAddition.boilTime.timeUnit
     ]
 
 hopAdditionsView : Recipe -> Html Msg
