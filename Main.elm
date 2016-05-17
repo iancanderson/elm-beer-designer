@@ -35,10 +35,6 @@ update msg model =
 
 -- VIEW
 
---TODO
-hopAmountDisplay : Model -> String
-hopAmountDisplay _ = "1 ounces"
-
 hopAdditionView : HopAddition -> Html Msg
 hopAdditionView hopAddition =
   div []
@@ -46,7 +42,7 @@ hopAdditionView hopAddition =
     , text <| toString hopAddition.amount.value
     , button [ onClick IncreaseHopAdditionMass ] [ text "+" ]
     , text " "
-    , text <| toString hopAddition.amount.weightUnit
+    , text <| toString hopAddition.amount.massUnit
     , text " "
     , text <| toString hopAddition.hopVariety
     , text " boiled for "

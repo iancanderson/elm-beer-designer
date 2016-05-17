@@ -7,7 +7,7 @@ type HopVariety = Cascade
 
 type alias MassAmount =
   { value: Float
-  , weightUnit: MassUnit
+  , massUnit: MassUnit
   }
 
 type alias TimeAmount =
@@ -26,7 +26,7 @@ type alias Recipe =
 type alias Model = Recipe
 
 initialHopAddition =
-  { amount = { value = 1, weightUnit = Ounce }
+  { amount = { value = 1, massUnit = Ounce }
   , hopVariety = Cascade
   , boilTime = { value = 60, timeUnit = Minute }
   }
