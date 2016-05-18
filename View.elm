@@ -11,7 +11,7 @@ import Html.Events exposing (onClick, onInput)
 hopAdditionView : HopAddition -> Html Msg
 hopAdditionView hopAddition =
   let
-      amountValue = toString hopAddition.amount.value
+    amountValue = toString hopAddition.amount.value
   in
     div []
       [ input [ onInput SetHopAdditionAmount, value amountValue ] []
