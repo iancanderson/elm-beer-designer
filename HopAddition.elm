@@ -3,6 +3,7 @@ module HopAddition exposing(Model, Msg(..), initialHopAddition, update, view)
 import Html exposing (Html, div, input, span, text)
 import Html.Attributes exposing (value)
 import Html.Events exposing (onInput)
+import String
 
 type MassUnit = Ounce
 type TimeUnit = Minute
@@ -36,10 +37,13 @@ type Msg = SetHopAdditionAmount String
 
 update : Msg -> Model -> Model
 update msg model =
-  let
-    oldAmount = model.amount
-  in
-    { model | amount = { oldAmount | value = model.amount.value - 1 } }
+  case msg of
+    SetHopAdditionAmount stringValue ->
+    let
+      newValue = Result.withDefault 0 (String.toFloat stringValue)
+      oldAmount = model.amount
+    in
+      { model | amount = { oldAmount | value = newValue } }
 
 view : Model -> Html Msg
 view hopAddition =
