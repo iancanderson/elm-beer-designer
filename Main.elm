@@ -1,6 +1,8 @@
-import Html exposing (Html, button, div, h2, span, text)
+import Html exposing (Html, button, div, h2, input, span, text)
 import Html.App as Html
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (value)
+import Html.Events exposing (onClick, onInput)
+import String
 
 import Calculations exposing (recipeIbus)
 import Model exposing (HopAddition, Model, Recipe, initialHopAddition, initialModel)
@@ -10,46 +12,43 @@ main =
 
 -- UPDATE
 
-addHopAdditionAmount : Recipe -> Float -> Model
-addHopAdditionAmount recipe delta =
+setHopAdditionAmount : Recipe -> String -> Model
+setHopAdditionAmount recipe stringValue =
   let
     oldHopAddition = Maybe.withDefault initialHopAddition <| List.head recipe.hopAdditions
     oldAmount = oldHopAddition.amount
-    oldValue = oldAmount.value
+    newValue = Result.withDefault 0 (String.toFloat stringValue)
   in
     { hopAdditions = [
-        { oldHopAddition | amount = { oldAmount | value = oldValue + delta } }
+        { oldHopAddition | amount = { oldAmount | value = newValue } }
       ]
     }
 
-type Msg = IncreaseHopAdditionMass | DecreaseHopAdditionMass
+type Msg = SetHopAdditionAmount String
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    IncreaseHopAdditionMass ->
-      addHopAdditionAmount model 1
-
-    DecreaseHopAdditionMass ->
-      addHopAdditionAmount model -1
+    SetHopAdditionAmount stringValue ->
+      setHopAdditionAmount model stringValue
 
 -- VIEW
 
 hopAdditionView : HopAddition -> Html Msg
 hopAdditionView hopAddition =
-  div []
-    [ button [ onClick DecreaseHopAdditionMass ] [ text "-" ]
-    , text <| toString hopAddition.amount.value
-    , button [ onClick IncreaseHopAdditionMass ] [ text "+" ]
-    , text " "
-    , text <| toString hopAddition.amount.massUnit
-    , text " "
-    , text <| toString hopAddition.hopVariety
-    , text " boiled for "
-    , text <| toString hopAddition.boilTime.value
-    , text " "
-    , text <| toString hopAddition.boilTime.timeUnit
-    ]
+  let
+      amountValue = toString hopAddition.amount.value
+  in
+    div []
+      [ input [ onInput SetHopAdditionAmount, value amountValue ] []
+      , text <| toString hopAddition.amount.massUnit
+      , text " "
+      , text <| toString hopAddition.hopVariety
+      , text " boiled for "
+      , text <| toString hopAddition.boilTime.value
+      , text " "
+      , text <| toString hopAddition.boilTime.timeUnit
+      ]
 
 hopAdditionsView : Recipe -> Html Msg
 hopAdditionsView recipe =
