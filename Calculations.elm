@@ -8,8 +8,10 @@ type alias AlphaAcidPercentage = Float
 hopVarietyAlphaAcid : HopVariety -> AlphaAcidPercentage
 hopVarietyAlphaAcid hopVariety =
   case hopVariety of
-    Cascade ->
-      5.25
+    Cascade -> 5.25
+    Chinook -> 13
+    Citra   -> 12
+    Fuggle  -> 4.5
 
 -- http://howtobrew.com/book/section-1/hops/hop-bittering-calculations
 hopAdditionUtilization : HopAddition.Model -> Float
