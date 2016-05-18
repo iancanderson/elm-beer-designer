@@ -1,4 +1,4 @@
-module HopAddition exposing(Model, Msg(..), initialHopAddition, update, view)
+module HopAddition exposing(HopVariety(..), MassUnit(..), Model, Msg(..), TimeUnit(..), initialHopAddition, update, view)
 
 import Html exposing (Html, div, input, span, text)
 import Html.Attributes exposing (value)
