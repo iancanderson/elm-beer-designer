@@ -30,6 +30,7 @@ initialHopAddition =
   , hopVariety = Cascade
   , boilTime = { value = 60, timeUnit = Minute }
   }
+
 initialModel =
   { hopAdditions = [initialHopAddition]
   }

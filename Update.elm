@@ -15,10 +15,15 @@ setHopAdditionAmount recipe stringValue =
       ]
     }
 
-type Msg = SetHopAdditionAmount String
+type Msg = AddNewHopAddition | SetHopAdditionAmount String
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
+    AddNewHopAddition ->
+      let
+        oldHopAdditions = model.hopAdditions
+      in
+        { model | hopAdditions = oldHopAdditions ++ [initialHopAddition] }
     SetHopAdditionAmount stringValue ->
       setHopAdditionAmount model stringValue

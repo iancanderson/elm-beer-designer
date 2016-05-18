@@ -47,5 +47,6 @@ view model =
   div []
     [ recipeSummary model
     , hopAdditionsView model
+    , button [ onClick AddNewHopAddition ] [ text "Add new hop addition" ]
     ]
 
