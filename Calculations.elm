@@ -30,7 +30,7 @@ hopAdditionUtilization hopAddition =
 hopAdditionIbus : ( ID, HopAddition.Model ) -> Float
 hopAdditionIbus ( id, hopAddition ) =
   let
-    alphaAcidPercentage = hopVarietyAlphaAcid hopAddition.hopVariety
+    alphaAcidPercentage = hopVarietyAlphaAcid hopAddition.variety
     alphaAcidUnits = alphaAcidPercentage * weightInOunces
     recipeGallons = 5
     utilization = hopAdditionUtilization hopAddition

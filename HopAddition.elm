@@ -22,14 +22,14 @@ type alias TimeAmount =
 type alias HopAddition =
   { amount: MassAmount
   , boilTime: TimeAmount
-  , hopVariety: HopVariety
+  , variety: HopVariety
   }
 
 type alias Model = HopAddition
 
 initialHopAddition =
   { amount = { value = 1, massUnit = Ounce }
-  , hopVariety = Cascade
+  , variety = Cascade
   , boilTime = { value = 60, timeUnit = Minute }
   }
 
@@ -55,30 +55,30 @@ update msg model =
             "Fuggle" -> Fuggle
             _ -> Cascade
       in
-        { model | hopVariety = newVariety }
+        { model | variety = newVariety }
 
 
 --TODO: how to make sure this list is exhaustive??
-hopVarieties : List HopVariety
-hopVarieties = [ Cascade, Chinook, Citra, Fuggle ]
+varieties : List HopVariety
+varieties = [ Cascade, Chinook, Citra, Fuggle ]
 
-hopVarietyOptionView : HopVariety -> HopVariety -> Html Msg
-hopVarietyOptionView selectedHopVariety hopVariety =
+varietyOptionView : HopVariety -> HopVariety -> Html Msg
+varietyOptionView selectedVariety variety =
   let
-    hopVarietyValue = toString hopVariety
-    isSelected = hopVariety == selectedHopVariety
+    varietyValue = toString variety
+    isSelected = variety == selectedVariety
   in
     option
-      [ selected isSelected, value hopVarietyValue ] [ text hopVarietyValue ]
+      [ selected isSelected, value varietyValue ] [ text varietyValue ]
 
-hopVarietySelectView : Model -> Html Msg
-hopVarietySelectView hopAddition =
+varietySelectView : Model -> Html Msg
+varietySelectView hopAddition =
   let
-    selectedHopVariety = hopAddition.hopVariety
+    selectedHopVariety = hopAddition.variety
   in
     select
       [ onInput SetVariety ]
-      <| List.map (hopVarietyOptionView selectedHopVariety) hopVarieties
+      <| List.map (varietyOptionView selectedHopVariety) varieties
 
 view : Model -> Html Msg
 view hopAddition =
@@ -89,7 +89,7 @@ view hopAddition =
       [ input [ onInput SetAmount, value amountValue ] []
       , text <| toString hopAddition.amount.massUnit
       , text " "
-      , hopVarietySelectView hopAddition
+      , varietySelectView hopAddition
       , text " boiled for "
       , text <| toString hopAddition.boilTime.value
       , text " "
