@@ -9,13 +9,15 @@ type MassUnit = Ounce
 type TimeUnit = Minute
 type HopVariety = Cascade | Chinook | Citra | Fuggle
 
+type alias MassAmountValue = Float
 type alias MassAmount =
-  { value: Float
+  { value: MassAmountValue
   , massUnit: MassUnit
   }
 
+type alias TimeValue = Float
 type alias TimeAmount =
-  { value: Float
+  { value: TimeValue
   , timeUnit: TimeUnit
   }
 
@@ -33,7 +35,7 @@ initialHopAddition =
   , boilTime = { value = 60, timeUnit = Minute }
   }
 
-type Msg = SetAmount String | SetVariety String
+type Msg = SetAmount String | SetBoilTimeValue String | SetVariety String
 
 update : Msg -> Model -> Model
 update msg model =
@@ -44,6 +46,12 @@ update msg model =
         oldAmount = model.amount
       in
         { model | amount = { oldAmount | value = newValue } }
+    SetBoilTimeValue stringValue ->
+      let
+        newValue = Result.withDefault 0 (String.toFloat stringValue)
+        oldBoilTime = model.boilTime
+      in
+        { model | boilTime = { oldBoilTime | value = newValue } }
     SetVariety stringValue ->
       --TODO how to pass the type itself into this action??
       let
@@ -62,8 +70,8 @@ update msg model =
 varieties : List HopVariety
 varieties = [ Cascade, Chinook, Citra, Fuggle ]
 
-varietyOptionView : HopVariety -> HopVariety -> Html Msg
-varietyOptionView selectedVariety variety =
+varietyOption : HopVariety -> HopVariety -> Html Msg
+varietyOption selectedVariety variety =
   let
     varietyValue = toString variety
     isSelected = variety == selectedVariety
@@ -71,14 +79,41 @@ varietyOptionView selectedVariety variety =
     option
       [ selected isSelected, value varietyValue ] [ text varietyValue ]
 
-varietySelectView : Model -> Html Msg
-varietySelectView hopAddition =
+varietySelect : HopAddition -> Html Msg
+varietySelect hopAddition =
   let
-    selectedHopVariety = hopAddition.variety
+    selectedVariety = hopAddition.variety
   in
     select
       [ onInput SetVariety ]
-      <| List.map (varietyOptionView selectedHopVariety) varieties
+      <| List.map (varietyOption selectedVariety) varieties
+
+boilTimeValues : TimeValue -> TimeValue -> List TimeValue
+boilTimeValues min max =
+  if min == max then
+    [min]
+  else
+    min :: boilTimeValues (min + 1) max
+
+boilTimeValueOption : TimeValue -> TimeValue -> Html Msg
+boilTimeValueOption selectedTimeValue timeValue =
+  let
+    isSelected = timeValue == selectedTimeValue
+    timeValueString = toString timeValue
+  in
+    option
+      [ selected isSelected, value timeValueString ]
+      [ text timeValueString ]
+
+boilTimeValueSelect : HopAddition -> Html Msg
+boilTimeValueSelect hopAddition =
+  let
+    selectedTimeValue = hopAddition.boilTime.value
+    values = boilTimeValues 0 90
+  in
+    select
+      [ onInput SetBoilTimeValue ]
+      <| List.map (boilTimeValueOption selectedTimeValue) values
 
 view : Model -> Html Msg
 view hopAddition =
@@ -89,9 +124,9 @@ view hopAddition =
       [ input [ onInput SetAmount, value amountValue ] []
       , text <| toString hopAddition.amount.massUnit
       , text " "
-      , varietySelectView hopAddition
+      , varietySelect hopAddition
       , text " boiled for "
-      , text <| toString hopAddition.boilTime.value
+      , boilTimeValueSelect hopAddition
       , text " "
       , text <| toString hopAddition.boilTime.timeUnit
       ]
