@@ -33,18 +33,18 @@ initialHopAddition =
   , boilTime = { value = 60, timeUnit = Minute }
   }
 
-type Msg = SetHopAdditionAmount String | SetHopAdditionVariety String
+type Msg = SetAmount String | SetVariety String
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    SetHopAdditionAmount stringValue ->
+    SetAmount stringValue ->
       let
         newValue = Result.withDefault 0 (String.toFloat stringValue)
         oldAmount = model.amount
       in
         { model | amount = { oldAmount | value = newValue } }
-    SetHopAdditionVariety stringValue ->
+    SetVariety stringValue ->
       --TODO how to pass the type itself into this action??
       let
         newVariety =
@@ -77,7 +77,7 @@ hopVarietySelectView hopAddition =
     selectedHopVariety = hopAddition.hopVariety
   in
     select
-      [ onInput SetHopAdditionVariety ]
+      [ onInput SetVariety ]
       <| List.map (hopVarietyOptionView selectedHopVariety) hopVarieties
 
 view : Model -> Html Msg
@@ -86,7 +86,7 @@ view hopAddition =
     amountValue = toString hopAddition.amount.value
   in
     div []
-      [ input [ onInput SetHopAdditionAmount, value amountValue ] []
+      [ input [ onInput SetAmount, value amountValue ] []
       , text <| toString hopAddition.amount.massUnit
       , text " "
       , hopVarietySelectView hopAddition
