@@ -54,7 +54,8 @@ hopAdditionsView model =
 recipeSummary : Model -> Html Msg
 recipeSummary model =
   let
-    ibuDisplay = "IBUs: " ++ toString(recipeIbus model)
+    ibuDisplay = "IBUs: " ++ roundedIbu
+    roundedIbu = toString <| round <| recipeIbus model
   in
     div []
       [ h2 [] [ text "Recipe Summary" ]
