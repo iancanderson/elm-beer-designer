@@ -1,4 +1,4 @@
-module HopAddition exposing(HopVariety(..), MassUnit(..), Model, Msg(..), TimeUnit(..), initialHopAddition, update, view)
+module HopAddition exposing(HopVariety(..), MassUnit(..), Model, Msg(Delete), TimeUnit(..), initialHopAddition, update, view)
 
 import Html exposing (Html, button, div, input, option, select, span, text)
 import Html.Attributes exposing (selected, value)
@@ -45,6 +45,7 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     Delete ->
+      -- Parent will handle this and remove our model from its list
       model
 
     SetAmount stringValue ->

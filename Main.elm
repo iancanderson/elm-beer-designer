@@ -12,7 +12,10 @@ initialModel =
   , nextHopAdditionId = 0
   }
 
-type Msg = AddNewHopAddition | UpdateHopAddition ID HopAddition.Msg
+type Msg =
+    AddNewHopAddition
+  | DeleteHopAddition ID
+  | UpdateHopAddition ID HopAddition.Msg
 
 update : Msg -> Model -> Model
 update msg model =
@@ -27,29 +30,32 @@ update msg model =
         newHopAdditions = model.hopAdditions ++ [newHopAddition]
       in
         Model newHopAdditions (model.nextHopAdditionId + 1)
+    DeleteHopAddition id ->
+      let
+        doesNotHaveId (otherId, _) = otherId /= id
+      in
+        { model | hopAdditions = List.filter doesNotHaveId model.hopAdditions }
     UpdateHopAddition id hopAdditionMsg ->
-      case hopAdditionMsg of
-        -- TODO: The fact that the parent knows about this child action makes me sad
-        HopAddition.Delete ->
-          let
-            doesNotHaveId (otherId, _) = otherId /= id
-          in
-            { model | hopAdditions = List.filter doesNotHaveId model.hopAdditions }
-        _ ->
-          let
-            updateHopAddition (hopAdditionID, hopAdditionModel) =
-              if hopAdditionID == id then
-                (hopAdditionID, HopAddition.update hopAdditionMsg hopAdditionModel)
-              else
-                (hopAdditionID, hopAdditionModel)
-          in
-            { model | hopAdditions = List.map updateHopAddition model.hopAdditions }
+      let
+        updateHopAddition (hopAdditionID, hopAdditionModel) =
+          if hopAdditionID == id then
+            (hopAdditionID, HopAddition.update hopAdditionMsg hopAdditionModel)
+          else
+            (hopAdditionID, hopAdditionModel)
+      in
+        { model | hopAdditions = List.map updateHopAddition model.hopAdditions }
 
 -- VIEW
 
+hopAdditionMsgToMainMessage : ID -> HopAddition.Msg -> Msg
+hopAdditionMsgToMainMessage id hopAdditionMsg =
+  case hopAdditionMsg of
+    HopAddition.Delete -> DeleteHopAddition id
+    _ -> UpdateHopAddition id hopAdditionMsg
+
 hopAdditionView : (ID, HopAddition.Model) -> Html Msg
 hopAdditionView (id, model) =
-  App.map (UpdateHopAddition id) (HopAddition.view model)
+  App.map (hopAdditionMsgToMainMessage id) (HopAddition.view model)
 
 hopAdditionsView : Model -> Html Msg
 hopAdditionsView model =
