@@ -28,14 +28,22 @@ update msg model =
       in
         Model newHopAdditions (model.nextHopAdditionId + 1)
     UpdateHopAddition id hopAdditionMsg ->
-      let
-        updateHopAddition (hopAdditionID, hopAdditionModel) =
-          if hopAdditionID == id then
-            (hopAdditionID, HopAddition.update hopAdditionMsg hopAdditionModel)
-          else
-            (hopAdditionID, hopAdditionModel)
-      in
-        { model | hopAdditions = List.map updateHopAddition model.hopAdditions }
+      case hopAdditionMsg of
+        -- TODO: The fact that the parent knows about this child action makes me sad
+        HopAddition.Delete ->
+          let
+            doesNotHaveId (otherId, _) = otherId /= id
+          in
+            { model | hopAdditions = List.filter doesNotHaveId model.hopAdditions }
+        _ ->
+          let
+            updateHopAddition (hopAdditionID, hopAdditionModel) =
+              if hopAdditionID == id then
+                (hopAdditionID, HopAddition.update hopAdditionMsg hopAdditionModel)
+              else
+                (hopAdditionID, hopAdditionModel)
+          in
+            { model | hopAdditions = List.map updateHopAddition model.hopAdditions }
 
 -- VIEW
 

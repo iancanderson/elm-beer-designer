@@ -1,8 +1,8 @@
 module HopAddition exposing(HopVariety(..), MassUnit(..), Model, Msg(..), TimeUnit(..), initialHopAddition, update, view)
 
-import Html exposing (Html, div, input, option, select, span, text)
+import Html exposing (Html, button, div, input, option, select, span, text)
 import Html.Attributes exposing (selected, value)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onClick, onInput)
 import String
 
 type MassUnit = Ounce
@@ -35,11 +35,18 @@ initialHopAddition =
   , boilTime = { value = 60, timeUnit = Minute }
   }
 
-type Msg = SetAmount String | SetBoilTimeValue String | SetVariety String
+type Msg =
+    Delete
+  | SetAmount String
+  | SetBoilTimeValue String
+  | SetVariety String
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
+    Delete ->
+      model
+
     SetAmount stringValue ->
       let
         newValue = Result.withDefault 0 (String.toFloat stringValue)
@@ -129,4 +136,5 @@ view hopAddition =
       , boilTimeValueSelect hopAddition
       , text " "
       , text <| toString hopAddition.boilTime.timeUnit
+      , button [ onClick Delete ] [ text "Remove Hop Addition" ]
       ]
