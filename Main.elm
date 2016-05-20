@@ -12,7 +12,7 @@ initialModel =
   , nextHopAdditionId = 0
   }
 
-type Msg = AddNewHopAddition | SetHopAdditionAmount ID HopAddition.Msg
+type Msg = AddNewHopAddition | UpdateHopAddition ID HopAddition.Msg
 
 update : Msg -> Model -> Model
 update msg model =
@@ -27,7 +27,7 @@ update msg model =
         newHopAdditions = model.hopAdditions ++ [newHopAddition]
       in
         Model newHopAdditions (model.nextHopAdditionId + 1)
-    SetHopAdditionAmount id hopAdditionMsg ->
+    UpdateHopAddition id hopAdditionMsg ->
       let
         updateHopAddition (hopAdditionID, hopAdditionModel) =
           if hopAdditionID == id then
@@ -41,7 +41,7 @@ update msg model =
 
 hopAdditionView : (ID, HopAddition.Model) -> Html Msg
 hopAdditionView (id, model) =
-  App.map (SetHopAdditionAmount id) (HopAddition.view model)
+  App.map (UpdateHopAddition id) (HopAddition.view model)
 
 hopAdditionsView : Model -> Html Msg
 hopAdditionsView model =
