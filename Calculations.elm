@@ -2,6 +2,7 @@ module Calculations exposing (recipeIbus)
 
 import HopAddition exposing(HopVariety(..), MassUnit(..), TimeUnit(..))
 import Model exposing(BoilGravity, ID, Model)
+import Conversions exposing(gallons)
 
 type alias AlphaAcidPercentage = Float
 
@@ -31,14 +32,13 @@ hopAdditionIbus recipe ( _, hopAddition ) =
   let
     alphaAcidPercentage = hopVarietyAlphaAcid hopAddition.variety
     alphaAcidUnits = alphaAcidPercentage * weightInOunces
-    recipeGallons = 5 -- TODO: don't hardcode
     utilization = hopAdditionUtilization recipe.boilGravity hopAddition
     weightInOunces =
       case hopAddition.amount.massUnit of
         Ounce ->
           hopAddition.amount.value
   in
-    alphaAcidUnits * utilization * 75 / recipeGallons
+    alphaAcidUnits * utilization * 75 / gallons(recipe.volume)
 
 
 recipeIbus : Model -> Float

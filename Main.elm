@@ -6,11 +6,13 @@ import String
 import Calculations exposing(recipeIbus)
 import HopAddition
 import Model exposing(ID, Model)
+import Units exposing(VolumeUnit(Gallon))
 
 initialModel =
   { boilGravity = 1.050
   , hopAdditions = []
   , nextHopAdditionId = 0
+  , volume = { value = 5, unit = Gallon }
   }
 
 type Msg =
@@ -66,14 +68,18 @@ hopAdditionsView model =
     div [] ([heading, addButton] ++ rows)
 
 recipeSummary : Model -> Html Msg
-recipeSummary model =
+recipeSummary recipe =
   let
     ibuDisplay = "IBUs: " ++ roundedIbu
-    roundedIbu = toString <| round <| recipeIbus model
+    roundedIbu = toString(round(recipeIbus recipe))
+    volumeAmount = toString(recipe.volume.value)
+    volumeUnit = toString(recipe.volume.unit)
+    volumeDisplay = volumeAmount ++ " " ++ volumeUnit
   in
     div []
       [ h2 [] [ text "Recipe Summary" ]
-      , p [] [ text <| "Boil Gravity: " ++ toString(model.boilGravity) ]
+      , p [] [ text <| "Batch Volume: " ++ volumeDisplay ]
+      , p [] [ text <| "Boil Gravity: " ++ toString(recipe.boilGravity) ]
       , p [] [ text ibuDisplay ]
       ]
 
