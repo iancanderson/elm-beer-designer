@@ -1,7 +1,7 @@
 module Calculations exposing (recipeIbus)
 
 import HopAddition exposing(HopVariety(..), MassUnit(..), TimeUnit(..))
-import Model exposing(ID, Model)
+import Model exposing(BoilGravity, ID, Model)
 
 type alias AlphaAcidPercentage = Float
 
@@ -14,10 +14,9 @@ hopVarietyAlphaAcid hopVariety =
     Fuggle  -> 4.5
 
 -- http://howtobrew.com/book/section-1/hops/hop-bittering-calculations
-hopAdditionUtilization : HopAddition.Model -> Float
-hopAdditionUtilization hopAddition =
+hopAdditionUtilization : BoilGravity -> HopAddition.Model -> Float
+hopAdditionUtilization boilGravity hopAddition =
   let
-    boilGravity = 1.050 --TODO: don't hardcode
     gravityFactor = 1.65 * 0.000125^(boilGravity - 1)
     timeFactor = (1 - e^(-0.04 * boilMinutes)) / 4.15
     boilMinutes =
@@ -27,13 +26,13 @@ hopAdditionUtilization hopAddition =
   in
     gravityFactor * timeFactor
 
-hopAdditionIbus : ( ID, HopAddition.Model ) -> Float
-hopAdditionIbus ( id, hopAddition ) =
+hopAdditionIbus : Model -> ( ID, HopAddition.Model ) -> Float
+hopAdditionIbus recipe ( _, hopAddition ) =
   let
     alphaAcidPercentage = hopVarietyAlphaAcid hopAddition.variety
     alphaAcidUnits = alphaAcidPercentage * weightInOunces
-    recipeGallons = 5
-    utilization = hopAdditionUtilization hopAddition
+    recipeGallons = 5 -- TODO: don't hardcode
+    utilization = hopAdditionUtilization recipe.boilGravity hopAddition
     weightInOunces =
       case hopAddition.amount.massUnit of
         Ounce ->
@@ -47,6 +46,6 @@ recipeIbus recipe =
   let
     hopAdditions = recipe.hopAdditions
   in
-    List.sum <| List.map hopAdditionIbus hopAdditions
+    List.sum <| List.map (hopAdditionIbus recipe) hopAdditions
 
 

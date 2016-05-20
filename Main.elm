@@ -1,4 +1,4 @@
-import Html exposing (Html, button, div, h2, input, span, text)
+import Html exposing (Html, button, div, h2, input, p, text)
 import Html.App as App
 import Html.Events exposing (onClick, onInput)
 import String
@@ -8,7 +8,8 @@ import HopAddition
 import Model exposing(ID, Model)
 
 initialModel =
-  { hopAdditions = []
+  { boilGravity = 1.050
+  , hopAdditions = []
   , nextHopAdditionId = 0
   }
 
@@ -23,13 +24,11 @@ update msg model =
     AddNewHopAddition ->
       let
         newHopAddition =
-          (
-            model.nextHopAdditionId,
-            HopAddition.initialHopAddition
-          )
-        newHopAdditions = model.hopAdditions ++ [newHopAddition]
+          ( model.nextHopAdditionId, HopAddition.initialHopAddition )
       in
-        Model newHopAdditions (model.nextHopAdditionId + 1)
+        { model |
+            hopAdditions = model.hopAdditions ++ [newHopAddition],
+            nextHopAdditionId = model.nextHopAdditionId + 1 }
     DeleteHopAddition id ->
       let
         doesNotHaveId (otherId, _) = otherId /= id
@@ -74,7 +73,8 @@ recipeSummary model =
   in
     div []
       [ h2 [] [ text "Recipe Summary" ]
-      , span [] [ text ibuDisplay ]
+      , p [] [ text <| "Boil Gravity: " ++ toString(model.boilGravity) ]
+      , p [] [ text ibuDisplay ]
       ]
 
 view : Model -> Html Msg
