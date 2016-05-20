@@ -17,7 +17,6 @@ initialModel =
 
 type Msg =
     AddNewHopAddition
-  | DeleteHopAddition ID
   | UpdateHopAddition ID HopAddition.Msg
 
 update : Msg -> Model -> Model
@@ -31,32 +30,24 @@ update msg model =
         { model |
             hopAdditions = model.hopAdditions ++ [newHopAddition],
             nextHopAdditionId = model.nextHopAdditionId + 1 }
-    DeleteHopAddition id ->
-      let
-        doesNotHaveId (otherId, _) = otherId /= id
-      in
-        { model | hopAdditions = List.filter doesNotHaveId model.hopAdditions }
     UpdateHopAddition id hopAdditionMsg ->
       let
-        updateHopAddition (hopAdditionID, hopAdditionModel) =
+        updateAddition (hopAdditionID, hopAdditionModel) =
           if hopAdditionID == id then
             (hopAdditionID, HopAddition.update hopAdditionMsg hopAdditionModel)
           else
             (hopAdditionID, hopAdditionModel)
+
+        updatedHopAdditions = List.map updateAddition model.hopAdditions
+        isNotDeleted (id, hopAddition) = not hopAddition.isDeleted
       in
-        { model | hopAdditions = List.map updateHopAddition model.hopAdditions }
+        { model | hopAdditions = List.filter isNotDeleted updatedHopAdditions }
 
 -- VIEW
 
-hopAdditionMsgToMainMessage : ID -> HopAddition.Msg -> Msg
-hopAdditionMsgToMainMessage id hopAdditionMsg =
-  case hopAdditionMsg of
-    HopAddition.Delete -> DeleteHopAddition id
-    _ -> UpdateHopAddition id hopAdditionMsg
-
 hopAdditionView : (ID, HopAddition.Model) -> Html Msg
 hopAdditionView (id, model) =
-  App.map (hopAdditionMsgToMainMessage id) (HopAddition.view model)
+  App.map (UpdateHopAddition id) (HopAddition.view model)
 
 hopAdditionsView : Model -> Html Msg
 hopAdditionsView model =

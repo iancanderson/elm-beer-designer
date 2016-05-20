@@ -24,6 +24,7 @@ type alias TimeAmount =
 type alias HopAddition =
   { amount: MassAmount
   , boilTime: TimeAmount
+  , isDeleted: Bool
   , variety: HopVariety
   }
 
@@ -33,6 +34,7 @@ initialHopAddition =
   { amount = { value = 1, massUnit = Ounce }
   , variety = Cascade
   , boilTime = { value = 60, timeUnit = Minute }
+  , isDeleted = False
   }
 
 type Msg =
@@ -45,8 +47,7 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     Delete ->
-      -- Parent will handle this and remove our model from its list
-      model
+      { model | isDeleted = True }
 
     SetAmount stringValue ->
       let
