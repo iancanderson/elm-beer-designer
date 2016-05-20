@@ -60,10 +60,11 @@ hopAdditionView (id, model) =
 hopAdditionsView : Model -> Html Msg
 hopAdditionsView model =
   let
+    addButton = button [ onClick AddNewHopAddition ] [ text "Add new hop addition" ]
     heading = h2 [] [ text "Hop Additions" ]
     rows = List.map hopAdditionView model.hopAdditions
   in
-    div [] <| heading :: rows
+    div [] ([heading, addButton] ++ rows)
 
 recipeSummary : Model -> Html Msg
 recipeSummary model =
@@ -81,7 +82,6 @@ view model =
   div []
     [ recipeSummary model
     , hopAdditionsView model
-    , button [ onClick AddNewHopAddition ] [ text "Add new hop addition" ]
     ]
 
 main =
