@@ -4,7 +4,9 @@ import Html.Events exposing (onClick, onInput)
 import String
 
 import Calculations exposing(recipeIbus)
-import HopAddition
+import HopAddition.Model exposing(HopAddition)
+import HopAddition.Update
+import HopAddition.View
 import Model exposing(ID, Model)
 import Units exposing(VolumeUnit(Gallon))
 
@@ -17,7 +19,7 @@ initialModel =
 
 type Msg =
     AddNewHopAddition
-  | UpdateHopAddition ID HopAddition.Msg
+  | UpdateHopAddition ID HopAddition.Update.Msg
 
 update : Msg -> Model -> Model
 update msg model =
@@ -25,7 +27,7 @@ update msg model =
     AddNewHopAddition ->
       let
         newHopAddition =
-          ( model.nextHopAdditionId, HopAddition.initialHopAddition )
+          ( model.nextHopAdditionId, HopAddition.Model.init )
       in
         { model |
             hopAdditions = model.hopAdditions ++ [newHopAddition],
@@ -34,7 +36,7 @@ update msg model =
       let
         updateAddition (hopAdditionID, hopAdditionModel) =
           if hopAdditionID == id then
-            (hopAdditionID, HopAddition.update hopAdditionMsg hopAdditionModel)
+            (hopAdditionID, HopAddition.Update.update hopAdditionMsg hopAdditionModel)
           else
             (hopAdditionID, hopAdditionModel)
 
@@ -45,9 +47,9 @@ update msg model =
 
 -- VIEW
 
-hopAdditionView : (ID, HopAddition.Model) -> Html Msg
+hopAdditionView : (ID, HopAddition) -> Html Msg
 hopAdditionView (id, model) =
-  App.map (UpdateHopAddition id) (HopAddition.view model)
+  App.map (UpdateHopAddition id) (HopAddition.View.view model)
 
 hopAdditionsView : Model -> Html Msg
 hopAdditionsView model =

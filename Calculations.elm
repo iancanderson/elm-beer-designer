@@ -1,6 +1,6 @@
 module Calculations exposing (recipeIbus)
 
-import HopAddition exposing(HopVariety(..), MassUnit(..), TimeUnit(..))
+import HopAddition.Model exposing(HopAddition, HopVariety(..), MassUnit(..), TimeUnit(..))
 import Model exposing(BoilGravity, ID, Model)
 import Conversions exposing(gallons)
 
@@ -15,7 +15,7 @@ hopVarietyAlphaAcid hopVariety =
     Fuggle  -> 4.5
 
 -- http://howtobrew.com/book/section-1/hops/hop-bittering-calculations
-hopAdditionUtilization : BoilGravity -> HopAddition.Model -> Float
+hopAdditionUtilization : BoilGravity -> HopAddition -> Float
 hopAdditionUtilization boilGravity hopAddition =
   let
     gravityFactor = 1.65 * 0.000125^(boilGravity - 1)
@@ -27,7 +27,7 @@ hopAdditionUtilization boilGravity hopAddition =
   in
     gravityFactor * timeFactor
 
-hopAdditionIbus : Model -> ( ID, HopAddition.Model ) -> Float
+hopAdditionIbus : Model -> ( ID, HopAddition ) -> Float
 hopAdditionIbus recipe ( _, hopAddition ) =
   let
     alphaAcidPercentage = hopVarietyAlphaAcid hopAddition.variety
