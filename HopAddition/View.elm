@@ -20,7 +20,36 @@ varietyOption selectedVariety variety =
 
 --TODO: how to make sure this list is exhaustive??
 varieties : List HopVariety
-varieties = [ Cascade, Chinook, Citra, Fuggle ]
+varieties =
+  [ Amarillo
+  , Cascade
+  , Centennial
+  , Challenger
+  , Chinook
+  , Citra
+  , Columbus
+  , Crystal
+  , Fuggle
+  , Galaxy
+  , Hallertau
+  , Magnum
+  , Mosaic
+  , MountHood
+  , MountRainier
+  , NorthernBrewer
+  , Nugget
+  , Perle
+  , Saaz
+  , Simcoe
+  , SorachiAce
+  , Sterling
+  , Summit
+  , Tettnang
+  , Tomahawk
+  , Warrior
+  , Willamette
+  , Zeus
+  ]
 
 varietySelect : HopAddition -> Html Msg
 varietySelect hopAddition =

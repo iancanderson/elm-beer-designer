@@ -9,10 +9,34 @@ type alias AlphaAcidPercentage = Float
 hopVarietyAlphaAcid : HopVariety -> AlphaAcidPercentage
 hopVarietyAlphaAcid hopVariety =
   case hopVariety of
-    Cascade -> 5.25
-    Chinook -> 13
-    Citra   -> 12
-    Fuggle  -> 4.5
+    Amarillo       -> 9.5
+    Cascade        -> 5.25
+    Centennial     -> 10.5
+    Challenger     -> 7.5
+    Chinook        -> 13
+    Citra          -> 12
+    Columbus       -> 16
+    Crystal        -> 4.5
+    Fuggle         -> 4.5
+    Galaxy         -> 14.9
+    Hallertau      -> 4.5
+    Magnum         -> 13.5
+    Mosaic         -> 12.5
+    MountHood      -> 6.5
+    MountRainier   -> 6
+    NorthernBrewer -> 9
+    Nugget         -> 13
+    Perle          -> 8
+    Saaz           -> 3.75
+    Simcoe         -> 13
+    SorachiAce     -> 13
+    Sterling       -> 7.5
+    Summit         -> 18
+    Tettnang       -> 4.5
+    Tomahawk       -> 16
+    Warrior        -> 16
+    Willamette     -> 5
+    Zeus           -> 15
 
 -- http://howtobrew.com/book/section-1/hops/hop-bittering-calculations
 hopAdditionUtilization : BoilGravity -> HopAddition -> Float

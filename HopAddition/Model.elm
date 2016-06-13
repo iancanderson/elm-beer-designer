@@ -1,6 +1,34 @@
 module HopAddition.Model exposing (HopAddition, HopVariety(..), MassUnit(..), TimeUnit(..), TimeValue, init)
 
-type HopVariety = Cascade | Chinook | Citra | Fuggle
+type HopVariety = Amarillo
+  | Cascade
+  | Centennial
+  | Challenger
+  | Chinook
+  | Citra
+  | Columbus
+  | Crystal
+  | Fuggle
+  | Galaxy
+  | Hallertau
+  | Magnum
+  | Mosaic
+  | MountHood
+  | MountRainier
+  | NorthernBrewer
+  | Nugget
+  | Perle
+  | Saaz
+  | Simcoe
+  | SorachiAce
+  | Sterling
+  | Summit
+  | Tettnang
+  | Tomahawk
+  | Warrior
+  | Willamette
+  | Zeus
+
 type MassUnit = Ounce
 type TimeUnit = Minute
 
