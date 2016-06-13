@@ -4,6 +4,7 @@ import Html exposing (Html, button, div, input, option, select, span, text)
 import Html.Attributes exposing (selected, value)
 import Html.Events exposing (onClick, onInput)
 
+import Calculations exposing(hopVarietyAlphaAcid)
 import HopAddition.Model exposing(HopAddition, HopVariety(..), TimeValue)
 import HopAddition.Update exposing(Msg(..))
 
@@ -11,10 +12,11 @@ varietyOption : HopVariety -> HopVariety -> Html Msg
 varietyOption selectedVariety variety =
   let
     varietyValue = toString variety
+    varietyText = varietyValue ++ " (" ++ toString(hopVarietyAlphaAcid variety) ++ "% AA)"
     isSelected = variety == selectedVariety
   in
     option
-      [ selected isSelected, value varietyValue ] [ text varietyValue ]
+      [ selected isSelected, value varietyValue ] [ text varietyText ]
 
 --TODO: how to make sure this list is exhaustive??
 varieties : List HopVariety

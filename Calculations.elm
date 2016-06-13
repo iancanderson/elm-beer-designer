@@ -1,4 +1,4 @@
-module Calculations exposing (recipeIbus)
+module Calculations exposing (hopVarietyAlphaAcid, recipeIbus)
 
 import HopAddition.Model exposing(HopAddition, HopVariety(..), MassUnit(..), TimeUnit(..))
 import Model exposing(BoilGravity, ID, Model)
