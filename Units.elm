@@ -1,8 +1,11 @@
-module Units exposing(Volume, VolumeUnit(..))
+module Units exposing (Volume, VolumeUnit(..))
 
-type VolumeUnit = Gallon
+
+type VolumeUnit
+    = Gallon
+
 
 type alias Volume =
-  { value: Float
-  , unit: VolumeUnit
-  }
+    { value : Float
+    , unit : VolumeUnit
+    }
