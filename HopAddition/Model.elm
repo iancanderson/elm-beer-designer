@@ -1,4 +1,13 @@
-module HopAddition.Model exposing (HopAddition, HopVariety(..), MassUnit(..), TimeUnit(..), TimeValue, init)
+module HopAddition.Model
+    exposing
+        ( HopAddition
+        , HopVariety(..)
+        , MassUnit(..)
+        , TimeUnit(..)
+        , TimeValue
+        , init
+        , MassAmount
+        )
 
 
 type HopVariety
@@ -45,8 +54,9 @@ type alias MassAmountValue =
 
 
 type alias MassAmount =
-    { value : MassAmountValue
+    { value : Maybe MassAmountValue
     , massUnit : MassUnit
+    , input : String
     }
 
 
@@ -73,7 +83,7 @@ type alias Model =
 
 
 init =
-    { amount = { value = 1, massUnit = Ounce }
+    { amount = { value = Just 1, massUnit = Ounce, input = "1.0" }
     , variety = Cascade
     , boilTime = { value = 60, timeUnit = Minute }
     , isDeleted = False

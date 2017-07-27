@@ -2,7 +2,6 @@ module Main exposing (..)
 
 import Html exposing (Html, button, div, h2, input, p, text)
 import Html.Events exposing (onClick, onInput)
-import String
 import Calculations exposing (recipeIbus)
 import HopAddition.Model exposing (HopAddition)
 import HopAddition.Update

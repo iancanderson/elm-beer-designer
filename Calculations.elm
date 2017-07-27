@@ -133,7 +133,7 @@ hopAdditionIbus recipe ( _, hopAddition ) =
         weightInOunces =
             case hopAddition.amount.massUnit of
                 Ounce ->
-                    hopAddition.amount.value
+                    Maybe.withDefault 0 hopAddition.amount.value
     in
         alphaAcidUnits * utilization * 75 / gallons (recipe.volume)
 

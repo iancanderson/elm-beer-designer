@@ -1,6 +1,6 @@
 module HopAddition.Update exposing (Msg(..), update)
 
-import HopAddition.Model exposing (HopAddition, HopVariety(..))
+import HopAddition.Model exposing (HopAddition, HopVariety(..), MassAmount)
 import String
 
 
@@ -22,10 +22,15 @@ update msg model =
                 newValue =
                     Result.withDefault 0 (String.toFloat stringValue)
 
-                oldAmount =
-                    model.amount
+                newAmount =
+                    case String.toFloat stringValue of
+                        Err _ ->
+                            MassAmount Nothing model.amount.massUnit stringValue
+
+                        Ok newValue ->
+                            MassAmount (Just newValue) model.amount.massUnit stringValue
             in
-                { model | amount = { oldAmount | value = newValue } }
+                { model | amount = newAmount }
 
         SetBoilTimeValue stringValue ->
             let

@@ -117,7 +117,7 @@ view : HopAddition -> Html Msg
 view hopAddition =
     let
         amountValue =
-            toString hopAddition.amount.value
+            hopAddition.amount.input
     in
         div []
             [ input [ onInput SetAmount, value amountValue ] []
